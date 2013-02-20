@@ -245,7 +245,7 @@ typedef enum {
 } RTC_INT_OPT;
 
 
-/** @brief RTC time type option */
+/** @brief RTC time type option */   //define el orden de los parametros
 typedef enum {
 	RTC_TIMETYPE_SECOND = 0, 		/*!< Second */
 	RTC_TIMETYPE_MINUTE = 1, 		/*!< Month */
