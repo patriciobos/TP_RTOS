@@ -7,7 +7,25 @@
 \usepackage{tabularx}
 \usepackage{slashbox}
 \usepackage{rotating}
-\usepackage{pstricks}
+
+% control de márgenes
+\usepackage{anysize} 
+% Controla los márgenes {izquierda}{derecha}{arriba}{abajo}.
+\marginsize{3cm}{2cm}{2cm}{2cm}
+
+
+
+% cabecera y pie
+\usepackage{fancyhdr} % activamos el paquete
+\pagestyle{fancy} % seleccionamos un estilo
+\lhead{Seminario de Sistemas Embebidos - FiUBA} % texto izquierda de la cabecera
+\chead{} % texto centro de la cabecera
+\rhead{TP freeRTOS} 
+\lfoot{Bos - Petrella} % texto izquierda del pie
+\cfoot{} 
+\rfoot{pág. \thepage} % texto derecha del pie
+\renewcommand{\headrulewidth}{0.4pt} % grosor de la línea de la cabecera
+\renewcommand{\footrulewidth}{0.4pt} % grosor de la línea del pie
 
 
 \begin{document}
@@ -27,15 +45,18 @@
 	\vspace{2cm}	
 \end{center}
 
+\vfill
 \begin{flushright}
 		\textbf{Alumnos:}  Matías Petrella (68405)\\
 		 Patricio Bos (81163)\\
 		\textbf{Fecha:}  22/02/13\\
 \end{flushright}
+\newpage
 
 
 
 \tableofcontents
+\thispagestyle{empty}
 \newpage
 
 %------------------------------------------------------------------------------------------------
@@ -71,6 +92,7 @@ void UART3\_Enviar (uint8\_t* buffer, uint32\_t size);
 
 %------------------------------------------------------------------------------------------------
 %------------------------------------------------------------------------------------------------
+\newpage
 \section{Desarrollo}
 %------------------------------------------------------------------------------------------------
 %------------------------------------------------------------------------------------------------
@@ -127,20 +149,24 @@ void vSetupIntExt(void);
 void vSetupUart3(void);
 void UART3_Enviar(unsigned char* buffer, uint32_t size);
 
-/* Declare a variable of type xSemaphoreHandle. This is used to reference the
-semaphore that is used to synchronize a task with an interrupt. */
+/* Declare a variable of type xSemaphoreHandle. This is 
+ * used to reference the semaphore that is used to synchronize
+ * a task with an interrupt. */
 xSemaphoreHandle xCountingSemaphore;
 
-/* Declare a variable of type xSemaphoreHandle. This is used to reference the
-mutex type semaphore that is used to ensure mutual exclusive access to UART3. */
+/* Declare a variable of type xSemaphoreHandle. This is 
+ * used to reference the mutex type semaphore that is used
+ * to ensure mutual exclusive access to UART3. */
 xSemaphoreHandle xMutex;
 
-/* Declare a variable of type xQueueHandle. This is used to store the queue
-that is accessed by task 3. */
+/* Declare a variable of type xQueueHandle. This is used to
+ * store the queue
+ * that is accessed by task 3. */
 xQueueHandle xQueue;
 
 const char welcome[]={"LPC1769 encendido...UART3 configurada\r\n"};
-const char TextForPeriodicTask1[]={"Tarea 1 - Enviando informacion por la UART3\n\r"};
+const char TextForPeriodicTask1[]={"Tarea 1 - 
+							Enviando informacion por la UART3\n\r"};
 const char TextForTask2[]={"Tarea 2 - Caracter recibido: "};
 const char TextForTask3[]={"Tarea 3 - "};
 unsigned char datoString[]={"xx:xx:xx"};
@@ -277,7 +303,8 @@ static void vPeriodicTask1( void *pvParameters )
 
 		xSemaphoreGive(xMutex);
 		
-		/* queremos que la tarea se ejecute exactamente cada 100 milisegundos. */
+		/* queremos que la tarea se ejecute exactamente 
+		 * cada 100 milisegundos. */
 		vTaskDelayUntil( &xLastWakeTime, ( 100 / portTICK_RATE_MS ) );
 	}
 }
@@ -301,24 +328,21 @@ static void vAsincronicTask2()
 	/* Inicializacion del puntero al buffer de recepcion */
 	buffer = &RxBuffer;
 
-	/* As per most tasks, this task is implemented within an infinite loop. */
+	/* As per most tasks, this task is implemented 
+	 * within an infinite loop. */
 	for( ;; )
 	{
-		/* Use the semaphore to wait for the event. The semaphore was created
-		 * before the scheduler was started so before this task ran for the first
-		 * time. The task blocks indefinitely meaning this function call will only
-		 * return once the semaphore has been successfully obtained - so there is no
-		 * need to check the returned value. */
-		xSemaphoreTake( xCountingSemaphore, portMAX_DELAY );
-		xSemaphoreTake(xMutex,portMAX_DELAY);
+	
+	xSemaphoreTake( xCountingSemaphore, portMAX_DELAY );
+	xSemaphoreTake(xMutex,portMAX_DELAY);
 
-		/* Envia por la UART3 el mensaje constante. */
-		UART3_Enviar(TextForTask2,strlen(TextForTask2));
+	/* Envia por la UART3 el mensaje constante. */
+	UART3_Enviar(TextForTask2,strlen(TextForTask2));
 
-		UART3_Enviar(buffer,1);
-		UART_SendByte(LPC_UART3, '\n'); UART_SendByte(LPC_UART3, '\r');
+	UART3_Enviar(buffer,1);
+	UART_SendByte(LPC_UART3, '\n'); UART_SendByte(LPC_UART3, '\r');
 
-		xSemaphoreGive(xMutex);
+	xSemaphoreGive(xMutex);
 	}
 }
 
@@ -343,7 +367,8 @@ static void vAsincronicTask3( void *pvParameters )
 	/* This task is also defined within an infinite loop. */
 	for( ;; )
 	{
-		/* As this task unblocks immediately that data is written to the queue this
+		/* As this task unblocks immediately that data is
+		 * written to the queue this
 		 * call should always find the queue empty. */
 		if( uxQueueMessagesWaiting( xQueue ) != 0 )
 		{
@@ -363,8 +388,8 @@ static void vAsincronicTask3( void *pvParameters )
 
 		if( xStatus == pdPASS )
 		{
-			/* Data was successfully received from the queue, print out the received
-			value. */
+			/* Data was successfully received from the queue, 
+			 * print out the received value. */
 			xSemaphoreTake(xMutex,portMAX_DELAY);
 
 			UART3_Enviar(TextForTask3,strlen(TextForTask3));
@@ -467,9 +492,12 @@ void UART3_IRQHandler(void)
 
 \section{Diagrama temporal}
 
-\includegraphics[width=1\textwidth,angle=0]{./imagenes/diagrama-temporal.png}\\
+\includegraphics[width=0.9\textwidth,angle=0]{./imagenes/diagrama-temporal.png}\\
 
 \section{Conclusiones}
+Se pudo desarrollar un sistema que cumpla con todos los objetivos propuestos haciendo uso extensivo de las funciones propias del {\textit{port}} de freeRTOS para LPC1769, así como también de la librería CMSIS provista por NXP.\\
+Se utilizaron funciones ISRsafe dentro de las rutinas de interrupción y se forzó el llamado al schedule al finalizar las mismas para asegurar el cambio de contexto como práctica de buena programación.
+En cuanto a la elección de las prioridades, se optó por asignar prioridades distintas a cada tarea. La mas baja a la tarea periódica y la mayor a la tarea asociada al RTC.  No obstante lo cual, todas las tareas hacen uso de la UART cuya disponibilidad esta restringida a un mutex.  Por este motivo ninguna tarea es {\textit{pre-empted}} ya que tomar el mutex le asegura permanecer en estado running.
 
 
 \end{document}
