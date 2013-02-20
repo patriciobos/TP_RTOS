@@ -2,8 +2,8 @@
  * GENERATED FILE - DO NOT EDIT
  * (C) Code Red Technologies Ltd, 2008-2013
  * Generated linker script file for LPC1769
- * Created from generic_c.ld (vLPCXpresso v5.0 (10 [Build 1022] [2012-11-07] ))
- * By LPCXpresso v5.0.10 [Build 1022] [2012-11-07]  on Sat Feb 02 19:39:58 ART 2013
+ * Created from generic_c.ld (vLPCXpresso v4.3 (0 [Build 1023] [2012-09-19] ))
+ * By LPCXpresso v4.3.0 [Build 1023] [2012-09-19]  on Tue Feb 19 21:13:11 ART 2013
  */
 
 
@@ -53,16 +53,17 @@ SECTIONS
 	/*
 	 * for exception handling/unwind - some Newlib functions (in common
 	 * with C++ and STDC++) use this. 
+	 * Use KEEP so not discarded with --gc-sections
 	 */
 	.ARM.extab : ALIGN(4)
 	{
-		*(.ARM.extab* .gnu.linkonce.armextab.*)
+		KEEP(*(.ARM.extab* .gnu.linkonce.armextab.*))
 	} > MFlash512
 	__exidx_start = .;
 	
 	.ARM.exidx : ALIGN(4)
 	{
-		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
+		KEEP(*(.ARM.exidx* .gnu.linkonce.armexidx.*))
 	} > MFlash512
 	__exidx_end = .;
 	

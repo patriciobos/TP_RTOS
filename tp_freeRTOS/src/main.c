@@ -89,7 +89,7 @@ unsigned char datoString[]={"xx:xx:xx"};
 unsigned char RxBuffer;
 //unsigned char *pcRxBuffer;
 
-static RTC_TIME_Type localTime;
+static RTC_TIME_Type localTime;  //variable de tipo estructura con los datos del RTC
 
 
 /*-----------------------------------------------------------*/
@@ -366,22 +366,22 @@ void EINT0_IRQHandler ()
 
 	RTC_GetFullTime(LPC_RTC, &localTime);
 
-	seg_int=localTime.SEC;
-	min_int=localTime.MIN;
-	hor_int=localTime.HOUR;
+	seg_int=localTime.SEC;	//tomo los segundos (pero esta en HEXA)
+	min_int=localTime.MIN;	//tomo los minutos  (IDEM)
+	hor_int=localTime.HOUR;	//tomo las horas    (IDEM)
 
-	decena=(char)floor(hor_int/10)+48;
-	unidad=(char)fmod(hor_int,10)+48;
+	decena=(char)floor(hor_int/10)+48;	//convierte hora a ASCII; "floor" redondea al entero mas bajo
+	unidad=(char)fmod(hor_int,10)+48;	//IDEM, "fmod" da el resto
 	datoString[0]=decena;
 	datoString[1]=unidad;
 
-	decena=(char)floor(min_int/10)+48;
-	unidad=(char)fmod(min_int,10)+48;
+	decena=(char)floor(min_int/10)+48;	//convierte minuto a ASCII
+	unidad=(char)fmod(min_int,10)+48;	//IDEM
 	datoString[3]=decena;
 	datoString[4]=unidad;
 
-	decena=(char)floor(seg_int/10)+48;
-	unidad=(char)fmod(seg_int,10)+48;
+	decena=(char)floor(seg_int/10)+48;	//convierte segundo a ASCII
+	unidad=(char)fmod(seg_int,10)+48;	//IDEM
 	datoString[6]=decena;
 	datoString[7]=unidad;
 
