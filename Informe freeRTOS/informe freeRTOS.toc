@@ -1,0 +1,11 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Objetivo}{3}
+\contentsline {section}{\numberline {2}Desarrollo}{3}
+\contentsline {subsection}{\numberline {2.1}Introduccion}{3}
+\contentsline {subsection}{\numberline {2.2}Includes, protot\IeC {\'\i }pos y variables globales}{4}
+\contentsline {subsection}{\numberline {2.3}Funciones de configuraci\IeC {\'o}n}{6}
+\contentsline {subsection}{\numberline {2.4}Enviar\_UART3}{7}
+\contentsline {subsection}{\numberline {2.5}Tareas}{8}
+\contentsline {subsection}{\numberline {2.6}Routinas de interrupci\IeC {\'o}n}{11}
+\contentsline {section}{\numberline {3}Diagrama temporal}{13}
+\contentsline {section}{\numberline {4}Conclusiones}{13}

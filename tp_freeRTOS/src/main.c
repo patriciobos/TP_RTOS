@@ -54,14 +54,14 @@ licensing and training services.
 
 /* The tasks to be created. */
 //static void vHandlerTask( void *pvParameters );
-static void vPeriodicTask1( void *pvParameters );
-static void vAsincronicTask2( void *pvParameters );
-static void vAsincronicTask3( void *pvParameters );
+static void vPeriodicTask1(void);
+static void vAsincronicTask2(void);
+static void vAsincronicTask3(void);
 
 void vSetupRtc(void);
 void vSetupIntExt(void);
 void vSetupUart3(void);
-void UART3_Enviar(uint32_t* buffer, uint32_t size);
+void UART3_Enviar(unsigned char* buffer, uint32_t size);
 
 
 
@@ -151,7 +151,7 @@ insufficient heap memory available for a resource to be created. */
 
 /*-----------------------------------------------------------*/
 
-static void vPeriodicTask1( void *pvParameters )
+static void vPeriodicTask1( )
 {
 	portTickType xLastWakeTime;
 
@@ -177,7 +177,7 @@ API function. */
 }
 
 /*-----------------------------------------------------------*/
-static void vAsincronicTask2( void *pvParameters )
+static void vAsincronicTask2()
 {
 	unsigned char * buffer;
 
@@ -204,13 +204,11 @@ static void vAsincronicTask2( void *pvParameters )
 
 		xSemaphoreGive(xMutex);
 	}
-
-
 }
 
 /*-----------------------------------------------------------*/
 
-static void vAsincronicTask3( void *pvParameters )
+static void vAsincronicTask3(void)
 {
 	/* Declare the variable that will hold the values received from the queue. */
 
@@ -264,7 +262,6 @@ static void vAsincronicTask3( void *pvParameters )
 
 			xSemaphoreGive(xMutex);
 		}
-
 	}
 }
 
@@ -343,7 +340,7 @@ void vSetupUart3()
 }
 
 /*-----------------------------------------------------------*/
-void UART3_Enviar(uint32_t* buffer, uint32_t size)
+void UART3_Enviar(unsigned char* buffer, uint32_t size)
 {
 	UART_Send(LPC_UART3, buffer, size, BLOCKING);
 
